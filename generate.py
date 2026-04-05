@@ -111,7 +111,6 @@ CATEGORIES = [
 	RefCategory('colors',
 		'C64 Colors', 'Colors',
 		[DEFAULT_AUTHOR],
-		is_wip=True
 	),
 ]
 

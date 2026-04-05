@@ -984,8 +984,8 @@ function refresh(){
 
     {
         let
-            pointerEvents,
-            opacity,
+            pointerEvents = '',
+            opacity = '',
             toggle,
             invert;
 
@@ -1009,6 +1009,9 @@ function refresh(){
 
         luma.pointerEvents = pattern.pointerEvents = pointerEvents;
         luma.opacity = pattern.opacity = opacity;
+
+        ui_limit_lumadiff.disabled = (mixed == '0');
+        ui_limit_lumadiff.parentElement.style.opacity = opacity;
 
         if(toggle){
             const { options } = pattern_element;
@@ -1140,13 +1143,15 @@ function refresh(){
                 r = (colorA.r * f + colorB.r * (1 - f)) | 0 ,
                 g = (colorA.g * f + colorB.g * (1 - f)) | 0 ,
                 b = (colorA.b * f + colorB.b * (1 - f)) | 0 ,
-                y = (colorA.y * f + colorB.y * (1 - f)) | 0 ;
+                y = (colorA.y * f + colorB.y * (1 - f)) | 0 ,
+                u = colorA.u * f + colorB.u * (1 - f) ,
+                v = colorA.v * f + colorB.v * (1 - f) ;
 
             const { h , s } = HSLfromRGB({ r , g , b });
 
             colors.push({
                 r , g , b ,
-                y , h , s , f ,
+                y , u , v , h , s , f ,
                 component1 : colorA ,
                 component2 : colorB ,
                 lumadiff : abs(colorA.y - colorB.y) ,
@@ -1488,16 +1493,19 @@ function refresh(){
 
 	for (let i = 0; i < colors.length; i++) {
 		let c = colors[i];
-		let ci1 = '';
-		let ci2 = '';
+		let ci1, ci2;
 		let imagem = imageFromColor(c,pattern);
 		let image1 = '';
 		let image2 = '';
 		if (c.component1) {
 			ci1 = c.component1.index;
 			ci2 = c.component2.index;
-			let image1 = imageFromColor(c.component1,pattern);
-			let image2 = imageFromColor(c.component2,pattern);
+			image1 = imageFromColor(c.component1,pattern);
+			image2 = imageFromColor(c.component2,pattern);
+		} else {
+			ci1 = c.index;
+			ci2 = '\u2014';
+			image1 = imageFromColor(c,pattern);
 		}
 
 		let tr = create("tr");
@@ -1535,10 +1543,11 @@ function refresh(){
 		td = create("td");
 		td.className='colbox'
 		td.style.backgroundImage = image2;
+		if (!image2) td.innerHTML = '\u2014';
 		tr.appendChild(td);
 
 		td = create("td");
-		td.innerHTML = c.lumadiff >= 0 ? c.lumadiff.toFixed(1) : '';
+		td.innerHTML = c.lumadiff >= 0 ? c.lumadiff.toFixed(1) : '\u2014';
 		tr.appendChild(td);
 
 		td = create("td");
@@ -1554,15 +1563,11 @@ function refresh(){
 		tr.appendChild(td);
 
 		td = create("td");
-		if (!c.component1) {
-			td.innerHTML = c.u.toFixed(1);
-		}
+		td.innerHTML = c.u.toFixed(1);
 		tr.appendChild(td);
 
 		td = create("td");
-		if (!c.component1) {
-			td.innerHTML = c.v.toFixed(1);
-		}
+		td.innerHTML = c.v.toFixed(1);
 		tr.appendChild(td);
 
 		hsl = HSLfromRGB(c);

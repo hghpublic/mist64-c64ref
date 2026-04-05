@@ -14,6 +14,7 @@
 
 		<div>
 
+		<p>The C64's VIC-II has 16 hardware colors, but by dithering two colors in alternating patterns, many more effective colors can be produced. On PAL systems, the TV's delay line physically averages the chroma of adjacent scanlines, so alternating-line mixes are true signal-level blends, not just optical illusions. Combinations with equal luma (23c) blend seamlessly; as the luma difference grows, the dithering pattern becomes increasingly visible.</p>
 		<p>Based on <a href="https://www.pepto.de/projects/colorvic/"><b>Pepto</b></a>'s work.</p>
 		<hr>
 
@@ -255,10 +256,10 @@
 
 		<div>
 		<ul>
-			<li id="note_levels"><b>VIC-II Rev</b>: </li>
-			<li id="note_mixed"><b>Mixed Colors</b>: </li>
-			<li id="note_lumadiff"><b>Max Luma Diff</b>: </li>
-			<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: </li>
+			<li id="note_levels"><b>VIC-II Rev</b>: The first revision of the VIC-II (6569R1) only has 5 distinct luma levels, while all later revisions have 9. The 5-level chips are quite rare.</li>
+			<li id="note_mixed"><b>Mixed Colors</b>: By using dithering patterns of two colors, the C64 can produce additional colors that appear as a mix of the two components. "50%" uses alternating lines for an equal mix; "25%/50%/75%" adds horizontal dithering patterns for unequal mixes, producing an even larger palette.</li>
+			<li id="note_lumadiff"><b>Max Luma Diff</b>: The maximum allowed luma difference between the two components of a mixed color. Lower values produce smoother-looking mixes with less visible dithering artifacts; higher values allow more combinations but with coarser patterns.</li>
+			<li id="note_limit_lumadiff"><b>Limit Max Luma Diff</b>: When checked, limits the luma difference slider to a conservative range that produces good results on real hardware. Uncheck to access the full range.</li>
 
 			<li id="note_pattern"><b>Mixing Pattern</b>: On a real system, *alternating columns* and *checkered* will produce nasty vertical low-frequency color stripes ("GEOS effect") for larger areas. The same is true for *checkered 2x* for lower luma diffs. The previews do not account for this.</li>
 			<li id="note_sortby"><b>Sort by</b>: The color index is defined as follows: The 16 base colors have their natural indexes. Mixed colors are sorted first by luma diff, then by the index of the component with the lower index, then by the component with the higher index.</li>
